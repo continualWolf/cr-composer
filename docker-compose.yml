@@ -1,0 +1,26 @@
+version: "3"
+
+services:
+  conference-rooms:
+    build: ../conference-rooms
+    ports:
+      - "4200:4200"
+
+  cr-publisher:
+    build: ../cr-publisher
+    ports:
+      - "3000:3000"
+    environment:
+      REDIS_URL: redis://redis:6379
+    depends_on:
+      - redis
+
+  cr-bookings:
+    build: ../cr-bookings
+    environment:
+      REDIS_URL: redis://redis:6379
+    depends_on:
+      - redis
+
+  redis:
+    image: redis:7-alpine
